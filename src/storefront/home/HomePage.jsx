@@ -6,6 +6,7 @@ import { ImageWithFallback } from '../ui/ImageWithFallback.jsx';
 import { StoreIcon } from '../ui/Icons.jsx';
 import { storeMotion } from '../motion.js';
 import { SipSuggestion } from './SipSuggestion.jsx';
+import { SipWheel } from './SipWheel.jsx';
 
 export default function HomePage() {
   const reduce = useReducedMotion();
@@ -77,6 +78,7 @@ export default function HomePage() {
         </Link>
       </div>
       <SipSuggestion />
+      <SipWheel />
       <section className="featured-section wrap">
         <div className="section-heading">
           <div>

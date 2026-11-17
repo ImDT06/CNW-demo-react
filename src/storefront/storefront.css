@@ -3265,3 +3265,91 @@ html[data-theme='dark'] .success-mark {
   background: #b2e991;
   color: #203d2c;
 }
+/* ---- "Để OneSip chọn giúp" wheel ---- */
+.sip-wheel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+  margin-block: 64px;
+}
+.wheel-copy h2 {
+  font-size: clamp(30px, 3.4vw, 44px);
+  margin: 6px 0 10px;
+}
+.wheel-copy > p:not(.eyebrow) {
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.wheel-result {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 72px;
+  margin-top: 20px;
+}
+.wheel-result img {
+  border-radius: 10px;
+  object-fit: cover;
+  animation: toast-in 0.3s ease-out;
+}
+.wheel-result div {
+  display: grid;
+  gap: 2px;
+  font-size: 15px;
+}
+.wheel-result a {
+  font-weight: 700;
+  color: var(--ink);
+}
+.wheel-stage {
+  position: relative;
+  width: min(360px, 100%);
+  aspect-ratio: 1;
+  justify-self: center;
+}
+.wheel-pointer {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  z-index: 2;
+  width: 0;
+  height: 0;
+  border: 14px solid transparent;
+  border-top: 24px solid #ce3d16;
+  border-bottom: 0;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.25));
+}
+.wheel-disc {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 6px solid #203d2c;
+  box-shadow: 4px 4px 0 #203d2c;
+  transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 1);
+}
+.wheel-label {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  justify-items: center;
+  padding-top: 10%;
+  font-size: 14px;
+  font-weight: 700;
+  color: #203d2c;
+}
+@media (max-width: 899px) {
+  .sip-wheel {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .wheel-stage {
+    width: min(300px, 100%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wheel-disc {
+    transition-duration: 0.01s;
+  }
+}
