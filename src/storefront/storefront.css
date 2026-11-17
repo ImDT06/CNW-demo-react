@@ -3353,3 +3353,12 @@ html[data-theme='dark'] .success-mark {
     transition-duration: 0.01s;
   }
 }
+.sip-wheel > * {
+  min-width: 0;
+}
+.wheel-result {
+  flex-wrap: wrap;
+}
+.wheel-disc {
+  overflow: hidden;
+}
