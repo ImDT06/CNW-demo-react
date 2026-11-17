@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router';
-import { motion, useAnimationControls, useReducedMotion } from 'motion/react';
 import { useStore } from '../StorefrontProviders.jsx';
 import { StoreIcon } from '../ui/Icons.jsx';
 import { OrderSummary } from './OrderSummary.jsx';
@@ -8,53 +7,35 @@ import { CartLines } from './CartLines.jsx';
 import { UndoToast } from './UndoToast.jsx';
 export function CartDrawer({ open, onClose, lastAddedProductId, keyboardOpen = false }) {
   const dialog = useRef(null);
-  const controls = useAnimationControls();
-  const reduce = useReducedMotion();
   const immediate = useRef(false);
   const { items, quote, cartNotice } = useStore();
+  // Plain CSS slide (see .cart-dialog[data-state] in storefront.css): the browser runs the
+  // transform on the compositor, so a busy React render when "+" is clicked can't make it stutter.
   useEffect(() => {
     const el = dialog.current;
-    let active = true;
-    const previousOverflow = document.body.style.overflow;
+    let timer;
     if (open) {
-      if (!el.open) el.showModal();
+      if (!el.open) {
+        el.dataset.state = 'closed';
+        el.dataset.instant = keyboardOpen ? 'true' : '';
+        el.showModal();
+        void el.offsetWidth; // commit the off-screen position before sliding in
+      }
       document.body.style.overflow = 'hidden';
-      // Start the backdrop fade in the same frame as the slide: flush the "closed"
-      // style first (reading layout forces it), then switch to "open" so the CSS transition runs.
-      el.dataset.state = 'closed';
-      void el.offsetWidth;
       el.dataset.state = 'open';
-      if (reduce || keyboardOpen) controls.set({ transform: 'translateX(0%)' });
-      else
-        controls.start({
-          transform: 'translateX(0%)',
-          transition: { duration: 0.3, ease: [0.22, 0.61, 0.36, 1] },
-        });
     } else if (el.open) {
+      el.dataset.instant = immediate.current ? 'true' : '';
       el.dataset.state = 'closed';
       const finish = () => {
-        if (active) {
-          el.close();
-          document.body.style.overflow = '';
-        }
+        el.close();
+        document.body.style.overflow = '';
       };
-      if (reduce || immediate.current) {
-        controls.set({ transform: 'translateX(100%)' });
-        finish();
-      } else
-        controls
-          .start({
-            transform: 'translateX(100%)',
-            transition: { duration: 0.22, ease: [0.4, 0, 1, 1] },
-          })
-          .then(finish);
+      if (immediate.current) finish();
+      else timer = setTimeout(finish, 240);
     }
     immediate.current = false;
-    return () => {
-      active = false;
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [open, controls, reduce, keyboardOpen]);
+    return () => clearTimeout(timer);
+  }, [open, keyboardOpen]);
   const closeForNavigation = () => {
     immediate.current = true;
     onClose();
@@ -73,11 +54,7 @@ export function CartDrawer({ open, onClose, lastAddedProductId, keyboardOpen = f
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <motion.div
-        className="cart-drawer"
-        initial={{ transform: 'translateX(100%)' }}
-        animate={controls}
-      >
+      <div className="cart-drawer">
         <div className="drawer-heading">
           <div>
             <h2 id="drawer-title">
@@ -128,7 +105,7 @@ export function CartDrawer({ open, onClose, lastAddedProductId, keyboardOpen = f
             </Link>
           </div>
         )}
-      </motion.div>
+      </div>
     </dialog>
   );
 }

@@ -978,7 +978,7 @@ html[data-theme='dark'] .storefront {
   border: 0;
   background: transparent;
   color: var(--ink);
-  overflow: hidden;
+  overflow: clip;
 }
 .cart-dialog::backdrop {
   background: rgba(21, 30, 22, 0.28);
@@ -3118,20 +3118,26 @@ html {
 }
 .cart-dialog {
   background-color: rgba(21, 30, 22, 0);
-  transition: background-color 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition: background-color 0.25s ease-out;
 }
 .cart-dialog[data-state='open'] {
   background-color: rgba(21, 30, 22, 0.28);
 }
-.cart-dialog[data-state='closed'] {
-  transition-duration: 0.22s;
-  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+/* Simple slide from the right. */
+.cart-dialog .cart-drawer {
+  transform: translateX(100%);
+  transition: transform 0.25s ease-out;
 }
-.cart-drawer {
-  will-change: transform;
+.cart-dialog[data-state='open'] .cart-drawer {
+  transform: translateX(0);
+}
+.cart-dialog[data-instant='true'],
+.cart-dialog[data-instant='true'] .cart-drawer {
+  transition: none;
 }
 @media (prefers-reduced-motion: reduce) {
-  .cart-dialog {
+  .cart-dialog,
+  .cart-dialog .cart-drawer {
     transition: none;
   }
 }
@@ -3209,4 +3215,9 @@ html[data-theme='dark'] .shipping-bar > span {
   .shipping-bar > span {
     transition: none;
   }
+}
+/* Cover the reserved scrollbar gutter too, so the drawer sits flush with the right edge. */
+.cart-dialog {
+  width: 100vw;
+  max-width: 100vw;
 }
