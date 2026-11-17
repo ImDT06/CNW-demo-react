@@ -17,7 +17,9 @@ export function StorefrontProviders({ children }) {
   const [storageWarning, setStorageWarning] = useState(!getStorage());
   const [theme, setTheme] = useState(() => {
     try {
-      return getStorage()?.getItem('se347.theme.v1') === 'dark' ? 'dark' : 'light';
+      const saved = getStorage()?.getItem('se347.theme.v1');
+      if (saved === 'dark' || saved === 'light') return saved;
+      return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     } catch {
       return 'light';
     }
