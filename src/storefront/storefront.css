@@ -3118,19 +3118,100 @@ html {
 }
 .cart-dialog {
   background-color: rgba(21, 30, 22, 0);
-  transition: background-color 0.26s cubic-bezier(0.32, 0.72, 0, 1);
+  transition: background-color 0.32s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .cart-dialog[data-state='open'] {
   background-color: rgba(21, 30, 22, 0.28);
 }
 .cart-dialog[data-state='closed'] {
-  transition-duration: 0.2s;
+  transition-duration: 0.22s;
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
 }
 .cart-drawer {
   will-change: transform;
 }
 @media (prefers-reduced-motion: reduce) {
   .cart-dialog {
+    transition: none;
+  }
+}
+/* ---- Extensions: bag pop, undo toast, free-shipping progress ---- */
+.bag-pop {
+  animation: bag-pop 0.42s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes bag-pop {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.45); }
+  100% { transform: scale(1); }
+}
+.undo-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 14px 12px 18px;
+  border-radius: 12px;
+  background: #203d2c;
+  color: #fffdf6;
+  font-size: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+  transform: translateX(-50%);
+  animation: toast-in 0.26s cubic-bezier(0.23, 1, 0.32, 1);
+  max-width: calc(100% - 32px);
+}
+.undo-toast button {
+  border: 0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  min-height: 36px;
+  background: #ffdc5e;
+  color: #203d2c;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+html[data-theme='dark'] .undo-toast {
+  background: #fffdf6;
+  color: #203d2c;
+}
+@keyframes toast-in {
+  from { opacity: 0; transform: translate(-50%, 12px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+.shipping-progress {
+  display: grid;
+  gap: 8px;
+  margin-top: 4px;
+}
+.shipping-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--os-green-soft);
+  overflow: hidden;
+}
+.shipping-bar > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #2f8a4f;
+  transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+html[data-theme='dark'] .shipping-bar > span {
+  background: #b2e991;
+}
+.shipping-done {
+  font-weight: 600;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bag-pop,
+  .undo-toast {
+    animation: none;
+  }
+  .shipping-bar > span {
     transition: none;
   }
 }

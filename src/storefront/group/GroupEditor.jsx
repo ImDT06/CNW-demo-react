@@ -236,7 +236,7 @@ export function GroupEditor({ group, me, setGroup, onCopyLink, onLeave }) {
               giao.
             </p>
           )}
-          <OrderSummary quote={quote}>
+          <OrderSummary quote={quote} showShippingProgress={false}>
             <button
               className="os-button primary full"
               disabled={!quote.total}

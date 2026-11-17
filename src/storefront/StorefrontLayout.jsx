@@ -4,6 +4,7 @@ import { MotionConfig } from 'motion/react';
 import { useStore } from './StorefrontProviders.jsx';
 import { StoreIcon } from './ui/Icons.jsx';
 import { CartDrawer } from './cart/CartDrawer.jsx';
+import { UndoToast } from './cart/UndoToast.jsx';
 import './storefront.css';
 const positions = new Map();
 function RouteFocus() {
@@ -133,7 +134,8 @@ export function StorefrontLayout() {
               >
                 <StoreIcon name="bag" />
                 <span className="bag-label">Giỏ hàng</span>
-                <span className="bag-count" aria-live="polite">
+                {/* key remounts the badge on every change so the pop animation replays */}
+                <span key={quote.totalQuantity} className="bag-count bag-pop" aria-live="polite">
                   {quote.totalQuantity}
                 </span>
               </button>
@@ -171,6 +173,7 @@ export function StorefrontLayout() {
             <span>Dữ liệu sản phẩm và đặt đơn dùng để trải nghiệm.</span>
           </div>
         </footer>
+        {!drawer && <UndoToast />}
         <CartDrawer
           open={drawer}
           onClose={() => setDrawer(false)}

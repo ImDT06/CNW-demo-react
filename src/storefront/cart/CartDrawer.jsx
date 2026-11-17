@@ -5,6 +5,7 @@ import { useStore } from '../StorefrontProviders.jsx';
 import { StoreIcon } from '../ui/Icons.jsx';
 import { OrderSummary } from './OrderSummary.jsx';
 import { CartLines } from './CartLines.jsx';
+import { UndoToast } from './UndoToast.jsx';
 import { storeMotion } from '../motion.js';
 export function CartDrawer({ open, onClose, lastAddedProductId, keyboardOpen = false }) {
   const dialog = useRef(null);
@@ -19,16 +20,16 @@ export function CartDrawer({ open, onClose, lastAddedProductId, keyboardOpen = f
     if (open) {
       if (!el.open) el.showModal();
       document.body.style.overflow = 'hidden';
-      // Fade the backdrop in step with the slide (next frame so the transition runs).
-      requestAnimationFrame(() => {
-        if (active) el.dataset.state = 'open';
-      });
-      if (reduce || keyboardOpen) controls.set({ transform: 'translateX(0%)', opacity: 1 });
+      // Start the backdrop fade in the same frame as the slide: flush the "closed"
+      // style first (reading layout forces it), then switch to "open" so the CSS transition runs.
+      el.dataset.state = 'closed';
+      void el.offsetWidth;
+      el.dataset.state = 'open';
+      if (reduce || keyboardOpen) controls.set({ transform: 'translateX(0%)' });
       else
         controls.start({
           transform: 'translateX(0%)',
-          opacity: 1,
-          transition: { duration: 0.26, ease: storeMotion.drawer },
+          transition: { duration: 0.32, ease: storeMotion.ease },
         });
     } else if (el.open) {
       el.dataset.state = 'closed';
@@ -39,14 +40,13 @@ export function CartDrawer({ open, onClose, lastAddedProductId, keyboardOpen = f
         }
       };
       if (reduce || immediate.current) {
-        controls.set({ transform: 'translateX(100%)', opacity: 0 });
+        controls.set({ transform: 'translateX(100%)' });
         finish();
       } else
         controls
           .start({
             transform: 'translateX(100%)',
-            opacity: 0,
-            transition: { duration: 0.2, ease: storeMotion.drawer },
+            transition: { duration: 0.22, ease: [0.4, 0, 1, 1] },
           })
           .then(finish);
     }
@@ -76,7 +76,7 @@ export function CartDrawer({ open, onClose, lastAddedProductId, keyboardOpen = f
     >
       <motion.div
         className="cart-drawer"
-        initial={{ transform: 'translateX(100%)', opacity: 0 }}
+        initial={{ transform: 'translateX(100%)' }}
         animate={controls}
       >
         <div className="drawer-heading">
@@ -129,6 +129,7 @@ export function CartDrawer({ open, onClose, lastAddedProductId, keyboardOpen = f
           </div>
         )}
       </motion.div>
+      {open && <UndoToast />}
     </dialog>
   );
 }

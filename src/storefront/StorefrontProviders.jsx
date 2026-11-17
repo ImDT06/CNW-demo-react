@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { addCartItem, setCartQuantity, getCartQuote, normalizeCart } from './cart/cartModel.js';
 import { readCart, writeCart, getStorage, CART_KEY } from './cart/cartStorage.js';
@@ -14,6 +14,9 @@ export function StorefrontProviders({ children }) {
   const [receipt, setReceipt] = useState(() => readReceipt());
   const [pending, setPending] = useState(false);
   const [cartNotice, setCartNotice] = useState('');
+  // Last line removed from the cart, kept briefly so the user can undo.
+  const [lastRemoved, setLastRemoved] = useState(null);
+  const dismissUndo = useCallback(() => setLastRemoved(null), []);
   const [storageWarning, setStorageWarning] = useState(!getStorage());
   const [theme, setTheme] = useState(() => {
     try {
@@ -73,7 +76,22 @@ export function StorefrontProviders({ children }) {
     if (!pending) setItems((current) => setCartQuantity(current, id, quantity));
   };
   const removeItem = (id) => {
-    if (!pending) setItems((current) => current.filter((item) => item.productId !== id));
+    if (pending) return;
+    const index = items.findIndex((item) => item.productId === id);
+    if (index < 0) return;
+    setLastRemoved({ item: items[index], index, name: catalogById[id]?.name || '' });
+    setItems((current) => current.filter((item) => item.productId !== id));
+  };
+  const undoRemove = () => {
+    if (!lastRemoved || pending) return;
+    const { item, index } = lastRemoved;
+    setItems((current) => {
+      if (current.some((line) => line.productId === item.productId)) return current;
+      const next = [...current];
+      next.splice(Math.min(index, next.length), 0, item);
+      return normalizeCart(next);
+    });
+    setLastRemoved(null);
   };
   function resetStorefront() {
     abortRef.current?.abort();
@@ -113,6 +131,9 @@ export function StorefrontProviders({ children }) {
         abortRef,
         storageWarning,
         cartNotice,
+        lastRemoved,
+        undoRemove,
+        dismissUndo,
         theme,
         toggleTheme: () => setTheme((t) => (t === 'light' ? 'dark' : 'light')),
         resetStorefront,
