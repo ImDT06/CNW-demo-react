@@ -3107,3 +3107,30 @@ html[data-theme='dark'] .sip-context .eyebrow,
 html[data-theme='dark'] .sip-rank {
   color: #ffdc5e;
 }
+/* Cart drawer: smooth open/close.
+   - Reserve the scrollbar's space so locking body scroll doesn't shift the page sideways.
+   - Fade our own backdrop together with the slide instead of the instant ::backdrop. */
+html {
+  scrollbar-gutter: stable;
+}
+.cart-dialog::backdrop {
+  background: transparent;
+}
+.cart-dialog {
+  background-color: rgba(21, 30, 22, 0);
+  transition: background-color 0.26s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.cart-dialog[data-state='open'] {
+  background-color: rgba(21, 30, 22, 0.28);
+}
+.cart-dialog[data-state='closed'] {
+  transition-duration: 0.2s;
+}
+.cart-drawer {
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cart-dialog {
+    transition: none;
+  }
+}

@@ -19,6 +19,10 @@ export function CartDrawer({ open, onClose, lastAddedProductId, keyboardOpen = f
     if (open) {
       if (!el.open) el.showModal();
       document.body.style.overflow = 'hidden';
+      // Fade the backdrop in step with the slide (next frame so the transition runs).
+      requestAnimationFrame(() => {
+        if (active) el.dataset.state = 'open';
+      });
       if (reduce || keyboardOpen) controls.set({ transform: 'translateX(0%)', opacity: 1 });
       else
         controls.start({
@@ -27,6 +31,7 @@ export function CartDrawer({ open, onClose, lastAddedProductId, keyboardOpen = f
           transition: { duration: 0.26, ease: storeMotion.drawer },
         });
     } else if (el.open) {
+      el.dataset.state = 'closed';
       const finish = () => {
         if (active) {
           el.close();
