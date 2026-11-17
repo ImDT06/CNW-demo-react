@@ -11,7 +11,9 @@ export default function CatalogPage() {
     setParams(
       (current) => {
         const next = new URLSearchParams(current);
-        if (!value || value === 'all' || value === 'featured') next.delete(key);
+        const isDefault =
+          (key === 'category' && value === 'all') || (key === 'sort' && value === 'featured');
+        if (!value || isDefault) next.delete(key);
         else next.set(key, value);
         return next;
       },
@@ -89,7 +91,7 @@ export default function CatalogPage() {
           <StoreIcon name="search" size={34} />
           <h2>Chưa tìm thấy ngụm này.</h2>
           <p>Thử một tên khác hoặc xem lại tất cả sản phẩm nhé.</p>
-          <button className="os-button secondary" onClick={() => setParams({})}>
+          <button className="os-button secondary" onClick={() => setParams({}, { replace: true })}>
             Xóa bộ lọc
           </button>
         </div>
