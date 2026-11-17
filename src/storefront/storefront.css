@@ -3221,3 +3221,47 @@ html[data-theme='dark'] .shipping-bar > span {
   width: 100vw;
   max-width: 100vw;
 }
+/* Confirmation flourish. */
+.confirmation-page {
+  position: relative;
+}
+.confirm-flourish {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 0;
+  pointer-events: none;
+}
+.confirm-flourish svg {
+  position: absolute;
+  top: -20px;
+  left: calc(8% + var(--i) * 12%);
+  opacity: 0;
+  animation: flourish-drift 2.6s ease-in calc(var(--i) * 0.18s) 1 forwards;
+}
+.confirm-flourish path:first-child {
+  fill: #5f9a52;
+}
+.confirm-flourish path:last-child {
+  stroke: #2f5e2c;
+  stroke-width: 1.2;
+}
+.confirm-flourish svg:nth-child(even) path:first-child {
+  fill: #8cbf6a;
+}
+@keyframes flourish-drift {
+  0% { opacity: 0; transform: translate(0, 0) rotate(0deg); }
+  12% { opacity: 1; }
+  50% { transform: translate(24px, 160px) rotate(120deg); }
+  85% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-12px, 340px) rotate(220deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .confirm-flourish {
+    display: none;
+  }
+}
+/* Dark mode: the success tick was dark green on a dark green circle. */
+html[data-theme='dark'] .success-mark {
+  background: #b2e991;
+  color: #203d2c;
+}
