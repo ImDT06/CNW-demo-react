@@ -109,7 +109,7 @@ export function SipWheel() {
           </div>
           <div className="wheel-actions">
             <button className="os-button secondary" onClick={spin} disabled={spinning}>
-              {result ? 'Quay lại' : 'Quay'}
+              {result ? '🎡 Quay lần nữa' : '🎡 Quay thử'}
             </button>
             {result && (
               <button
