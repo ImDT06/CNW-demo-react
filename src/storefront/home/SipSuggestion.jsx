@@ -6,6 +6,7 @@ import { getStorage } from '../cart/cartStorage.js';
 import { ImageWithFallback } from '../ui/ImageWithFallback.jsx';
 import { StoreIcon } from '../ui/Icons.jsx';
 import { DEFAULT_PLACE, describeWeather, fetchWeather, suggestSips } from './sipSuggest.js';
+import { SipWheel } from './SipWheel.jsx';
 
 const CACHE_KEY = 'se347.weather.v1';
 const CACHE_MS = 30 * 60 * 1000;
@@ -142,6 +143,7 @@ export function SipSuggestion() {
         <p className="sip-source">
           Thời tiết từ Open-Meteo. Không có mạng, OneSip vẫn gợi ý theo giờ trong ngày.
         </p>
+        <SipWheel />
       </div>
       <ol className="sip-picks">
         {picks.map(({ product, reason }, index) => (

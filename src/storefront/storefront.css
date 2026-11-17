@@ -3265,100 +3265,129 @@ html[data-theme='dark'] .success-mark {
   background: #b2e991;
   color: #203d2c;
 }
-/* ---- "Để OneSip chọn giúp" wheel ---- */
-.sip-wheel {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  align-items: center;
-  margin-block: 64px;
+/* ---- "Để OneSip chọn giúp" wheel (dialog) ---- */
+.wheel-open {
+  margin-top: 18px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px dashed currentColor !important;
+  background: transparent;
+  color: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
 }
-.wheel-copy h2 {
-  font-size: clamp(30px, 3.4vw, 44px);
-  margin: 6px 0 10px;
+.wheel-open:hover {
+  background: rgba(255, 255, 255, 0.12);
 }
-.wheel-copy > p:not(.eyebrow) {
-  color: var(--muted);
-  margin-bottom: 20px;
+.wheel-dialog {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  overflow: clip;
+  max-width: calc(100vw - 32px);
+}
+.wheel-dialog::backdrop {
+  background: rgba(21, 30, 22, 0.45);
+}
+.wheel-dialog[open] .wheel-panel {
+  animation: toast-in 0.25s ease-out;
+}
+.wheel-panel {
+  position: relative;
+  width: min(420px, calc(100vw - 32px));
+  padding: 28px 24px 24px;
+  border-radius: 20px;
+  background: var(--canvas);
+  color: var(--ink);
+  text-align: center;
+  box-shadow: 6px 6px 0 #203d2c;
+  border: 2px solid #203d2c;
+}
+.wheel-panel h2 {
+  font-size: 30px;
+  margin: 0 0 18px;
+}
+.wheel-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+.wheel-stage {
+  position: relative;
+  width: min(320px, 100%);
+  aspect-ratio: 1;
+  margin: 0 auto;
+}
+.wheel-pointer {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  z-index: 2;
+  border: 14px solid transparent;
+  border-top: 24px solid #ce3d16;
+  border-bottom: 0;
+  transform: translateX(-50%);
+}
+.wheel-disc {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+  border-radius: 50%;
+  border: 6px solid #203d2c;
+  overflow: hidden;
+  transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 1);
+}
+.wheel-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  max-width: 34cqw;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #203d2c;
+  text-align: center;
+  transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 1);
 }
 .wheel-result {
   display: flex;
   align-items: center;
-  gap: 14px;
-  min-height: 72px;
-  margin-top: 20px;
+  justify-content: center;
+  gap: 12px;
+  min-height: 64px;
+  margin: 16px 0 12px;
+  text-align: left;
+}
+.wheel-result p {
+  color: var(--muted);
+  font-size: 14px;
+  text-align: center;
 }
 .wheel-result img {
   border-radius: 10px;
   object-fit: cover;
-  animation: toast-in 0.3s ease-out;
 }
 .wheel-result div {
   display: grid;
-  gap: 2px;
   font-size: 15px;
 }
 .wheel-result a {
   font-weight: 700;
   color: var(--ink);
 }
-.wheel-stage {
-  position: relative;
-  width: min(360px, 100%);
-  aspect-ratio: 1;
-  justify-self: center;
-}
-.wheel-pointer {
-  position: absolute;
-  top: -6px;
-  left: 50%;
-  z-index: 2;
-  width: 0;
-  height: 0;
-  border: 14px solid transparent;
-  border-top: 24px solid #ce3d16;
-  border-bottom: 0;
-  transform: translateX(-50%);
-  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.25));
-}
-.wheel-disc {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 6px solid #203d2c;
-  box-shadow: 4px 4px 0 #203d2c;
-  transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 1);
-}
-.wheel-label {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  justify-items: center;
-  padding-top: 10%;
-  font-size: 14px;
-  font-weight: 700;
-  color: #203d2c;
-}
-@media (max-width: 899px) {
-  .sip-wheel {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-  .wheel-stage {
-    width: min(300px, 100%);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .wheel-disc {
-    transition-duration: 0.01s;
-  }
-}
-.sip-wheel > * {
-  min-width: 0;
-}
-.wheel-result {
+.wheel-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
   flex-wrap: wrap;
 }
-.wheel-disc {
-  overflow: hidden;
+@media (prefers-reduced-motion: reduce) {
+  .wheel-disc,
+  .wheel-label {
+    transition-duration: 0.01s;
+  }
+  .wheel-dialog[open] .wheel-panel {
+    animation: none;
+  }
 }
