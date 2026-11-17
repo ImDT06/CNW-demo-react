@@ -4,7 +4,6 @@ import { MotionConfig } from 'motion/react';
 import { useStore } from './StorefrontProviders.jsx';
 import { StoreIcon } from './ui/Icons.jsx';
 import { CartDrawer } from './cart/CartDrawer.jsx';
-import { UndoToast } from './cart/UndoToast.jsx';
 import './storefront.css';
 const positions = new Map();
 function RouteFocus() {
@@ -173,7 +172,6 @@ export function StorefrontLayout() {
             <span>Dữ liệu sản phẩm và đặt đơn dùng để trải nghiệm.</span>
           </div>
         </footer>
-        {!drawer && <UndoToast />}
         <CartDrawer
           open={drawer}
           onClose={() => setDrawer(false)}

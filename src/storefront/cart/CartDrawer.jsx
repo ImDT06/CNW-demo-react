@@ -6,7 +6,6 @@ import { StoreIcon } from '../ui/Icons.jsx';
 import { OrderSummary } from './OrderSummary.jsx';
 import { CartLines } from './CartLines.jsx';
 import { UndoToast } from './UndoToast.jsx';
-import { storeMotion } from '../motion.js';
 export function CartDrawer({ open, onClose, lastAddedProductId, keyboardOpen = false }) {
   const dialog = useRef(null);
   const controls = useAnimationControls();
@@ -29,7 +28,7 @@ export function CartDrawer({ open, onClose, lastAddedProductId, keyboardOpen = f
       else
         controls.start({
           transform: 'translateX(0%)',
-          transition: { duration: 0.32, ease: storeMotion.ease },
+          transition: { duration: 0.3, ease: [0.22, 0.61, 0.36, 1] },
         });
     } else if (el.open) {
       el.dataset.state = 'closed';
@@ -97,6 +96,7 @@ export function CartDrawer({ open, onClose, lastAddedProductId, keyboardOpen = f
             <StoreIcon name="close" />
           </button>
         </div>
+        <UndoToast />
         {items.length ? (
           <>
             <div className="drawer-content">
@@ -129,7 +129,6 @@ export function CartDrawer({ open, onClose, lastAddedProductId, keyboardOpen = f
           </div>
         )}
       </motion.div>
-      {open && <UndoToast />}
     </dialog>
   );
 }

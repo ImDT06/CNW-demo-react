@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { useStore } from '../StorefrontProviders.jsx';
 
 /**
- * "Đã xóa … · Hoàn tác" toast. Rendered inside the cart dialog while it is open
- * (a modal dialog makes everything outside it inert) and in the page otherwise.
+ * "Đã xóa … · Hoàn tác" bar, shown right inside the cart (drawer and cart page)
+ * so the undo sits next to the line that was removed.
  */
 export function UndoToast() {
   const { lastRemoved, undoRemove, dismissUndo } = useStore();
