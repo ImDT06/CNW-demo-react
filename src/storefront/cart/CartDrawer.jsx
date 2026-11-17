@@ -102,7 +102,7 @@ export function CartDrawer({ open, onClose, lastAddedProductId, keyboardOpen = f
               )}
               <CartLines lastAddedProductId={lastAddedProductId} onNavigate={closeForNavigation} />
             </div>
-            <OrderSummary quote={quote}>
+            <OrderSummary quote={quote} totalTestId="drawer-total">
               <Link className="os-button primary full" to="/checkout" onClick={closeForNavigation}>
                 Tiếp tục đặt hàng <StoreIcon name="arrow" size={18} />
               </Link>

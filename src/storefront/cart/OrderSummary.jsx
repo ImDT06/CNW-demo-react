@@ -1,5 +1,6 @@
 import { formatPrice } from '../data/catalog.js';
-export function OrderSummary({ quote, children }) {
+import { FREE_SHIPPING_THRESHOLD } from './cartModel.js';
+export function OrderSummary({ quote, children, totalTestId = 'store-total' }) {
   return (
     <div className="order-summary">
       <div className="summary-row">
@@ -12,11 +13,11 @@ export function OrderSummary({ quote, children }) {
       </div>
       <div className="summary-total">
         <span>Tổng cộng</span>
-        <strong data-testid="store-total">{formatPrice(quote.total)}</strong>
+        <strong data-testid={totalTestId}>{formatPrice(quote.total)}</strong>
       </div>
-      {quote.subtotal > 0 && quote.subtotal < 150000 && (
+      {quote.subtotal > 0 && quote.subtotal < FREE_SHIPPING_THRESHOLD && (
         <p className="shipping-hint">
-          Thêm {formatPrice(150000 - quote.subtotal)} để được giao hàng miễn phí.
+          Thêm {formatPrice(FREE_SHIPPING_THRESHOLD - quote.subtotal)} để được giao hàng miễn phí.
         </p>
       )}
       {children}

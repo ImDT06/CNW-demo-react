@@ -57,14 +57,6 @@ export default function CatalogPage() {
       <div className="catalog-meta">
         <span role="status">{products.length} món nhỏ cho ngày của bạn</span>
         <div>
-          <label className="available-filter">
-            <input
-              type="checkbox"
-              checked={query.available}
-              onChange={(e) => update('available', e.target.checked ? 'true' : '')}
-            />{' '}
-            Còn hàng
-          </label>
           <label className="sort-label">
             <span className="sr-only">Sắp xếp</span>
             <select
