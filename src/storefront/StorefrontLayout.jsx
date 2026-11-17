@@ -47,12 +47,14 @@ function RouteFocus() {
       document.removeEventListener('close', focusPage, true);
     };
   }, [location.pathname, location.key, type]);
-  useEffect(
-    () => () => {
-      positions.set(location.key, window.scrollY);
-    },
-    [location.key],
-  );
+  useEffect(() => {
+    // Record while the user scrolls; reading scrollY on unmount is too late
+    // because the next (shorter) page has already been committed.
+    const key = location.key;
+    const save = () => positions.set(key, window.scrollY);
+    window.addEventListener('scroll', save, { passive: true });
+    return () => window.removeEventListener('scroll', save);
+  }, [location.key]);
   return null;
 }
 export function StorefrontLayout() {

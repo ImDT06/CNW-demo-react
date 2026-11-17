@@ -25,6 +25,10 @@ export function StorefrontProviders({ children }) {
     }
   });
   const abortRef = useRef(null);
+  const itemsRef = useRef(items);
+  useEffect(() => {
+    itemsRef.current = items;
+  }, [items]);
   const navigate = useNavigate();
   useEffect(() => {
     let active = true;
@@ -49,15 +53,21 @@ export function StorefrontProviders({ children }) {
     const product = catalogById[id];
     if (!product) return;
     const limit = Math.min(99, product.stock);
-    const room = limit - (items.find((item) => item.productId === id)?.quantity || 0);
+    // Use the latest cart (not this render's snapshot) so rapid adds report what really happened.
+    const current = itemsRef.current;
+    const qtyOf = (list) => list.find((item) => item.productId === id)?.quantity || 0;
+    const next = addCartItem(current, id, quantity);
+    const added = qtyOf(next) - qtyOf(current);
+    itemsRef.current = next;
+    const name = product.name.toLowerCase();
     setCartNotice(
-      room <= 0
-        ? `Giỏ đã đạt giới hạn ${limit} ${product.name.toLowerCase()}.`
-        : quantity > room
-          ? `Đã thêm ${room} ${product.name.toLowerCase()}. Giỏ đã đạt giới hạn ${limit}.`
-          : `Đã thêm ${quantity} ${product.name.toLowerCase()} vào giỏ.`,
+      added <= 0
+        ? `Giỏ đã đạt giới hạn ${limit} ${name}.`
+        : added < quantity
+          ? `Đã thêm ${added} ${name}. Giỏ đã đạt giới hạn ${limit}.`
+          : `Đã thêm ${quantity} ${name} vào giỏ.`,
     );
-    setItems((current) => addCartItem(current, id, quantity));
+    setItems(next);
   };
   const setQuantity = (id, quantity) => {
     if (!pending) setItems((current) => setCartQuantity(current, id, quantity));
