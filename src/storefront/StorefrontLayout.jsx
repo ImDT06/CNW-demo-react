@@ -103,6 +103,7 @@ export function StorefrontLayout() {
                 Trang chủ
               </NavLink>
               <NavLink to="/shop">Cửa hàng</NavLink>
+              <NavLink to="/group">Đặt nhóm</NavLink>
               <Link className="lab-link" to="/learn">
                 <StoreIcon name="code" size={15} /> React Lab
               </Link>

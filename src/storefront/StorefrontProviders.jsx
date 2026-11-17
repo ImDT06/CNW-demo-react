@@ -1,11 +1,12 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { addCartItem, setCartQuantity, getCartQuote } from './cart/cartModel.js';
+import { addCartItem, setCartQuantity, getCartQuote, normalizeCart } from './cart/cartModel.js';
 import { readCart, writeCart, getStorage, CART_KEY } from './cart/cartStorage.js';
 import { emptyDraft } from './checkout/checkoutValidation.js';
 import { readReceipt, RECEIPT_KEY } from './checkout/receiptStorage.js';
 import { resetDemoOrders } from './checkout/demoOrderService.js';
 import { catalogById } from './data/catalog.js';
+import { GROUP_KEY, ME_KEY } from './group/useGroup.js';
 const StoreContext = createContext(null);
 export function StorefrontProviders({ children }) {
   const [items, setItems] = useState(() => readCart());
@@ -72,6 +73,8 @@ export function StorefrontProviders({ children }) {
     try {
       getStorage()?.removeItem(CART_KEY);
       getStorage('sessionStorage')?.removeItem(RECEIPT_KEY);
+      getStorage()?.removeItem(GROUP_KEY);
+      getStorage()?.removeItem(ME_KEY);
     } catch {
       /* Reset memory even when storage is blocked. */
     }
@@ -86,6 +89,9 @@ export function StorefrontProviders({ children }) {
         setQuantity,
         removeItem,
         clearCart: () => setItems([]),
+        replaceCart: (next) => {
+          if (!pending) setItems(normalizeCart(next));
+        },
         draft,
         setDraft,
         receipt,

@@ -1916,6 +1916,9 @@ html[data-theme='dark'] .storefront {
   .header-inner nav > a {
     min-height: 36px;
   }
+  .header-inner > nav {
+    gap: 18px;
+  }
   .store-header nav .lab-link {
     margin-left: auto;
     font-size: 10px;
@@ -2903,5 +2906,157 @@ html[data-theme='dark'] .hero-stamp {
     font-size: 13px;
     padding-inline: 14px;
     gap: 10px;
+  }
+}
+
+/* "Hôm nay uống gì?" — weather and time-of-day suggestions on the home page. */
+.sip-suggest {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 40px;
+  align-items: center;
+  margin-top: 40px;
+  padding: 32px;
+  border: 1px solid var(--ink);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.sip-suggest[data-moment='night'],
+.sip-suggest[data-moment='evening'] {
+  background: var(--os-green-soft);
+}
+.sip-context .eyebrow {
+  color: var(--os-orange);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.sip-context h2 {
+  font-size: clamp(26px, 2.6vw, 34px);
+  margin-top: 10px;
+}
+.sip-context h2 em {
+  display: block;
+}
+.sip-weather {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  align-items: baseline;
+  margin-top: 18px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.sip-weather strong {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.sip-status {
+  min-height: 18px;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--sage-ink);
+}
+.sip-locate {
+  cursor: pointer;
+}
+.sip-source {
+  margin-top: 8px;
+  font-size: 10px;
+  color: var(--muted);
+}
+.sip-picks {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+.sip-picks > li:not(.sip-companion) {
+  display: grid;
+  grid-template-columns: 28px 64px minmax(0, 1fr) 44px;
+  gap: 14px;
+  align-items: center;
+  padding: 10px 12px 10px 10px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--canvas);
+}
+.sip-rank {
+  font-family: var(--display);
+  font-size: 22px;
+  color: var(--os-orange);
+  text-align: center;
+}
+.sip-image .image-shell,
+.sip-image img {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+.sip-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.sip-copy strong {
+  font-size: 14px;
+  font-weight: 500;
+}
+.sip-copy p {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--sage-ink);
+}
+.sip-copy > span {
+  font-size: 11px;
+  color: var(--muted);
+}
+.sip-picks .quick-add {
+  position: static;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.sip-companion {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--muted);
+  padding-inline: 4px;
+}
+.sip-companion a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+@media (max-width: 899px) {
+  .sip-suggest {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 24px;
+  }
+}
+@media (max-width: 639px) {
+  .sip-suggest {
+    margin-top: 28px;
+    padding: 18px;
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .sip-picks > li:not(.sip-companion) {
+    grid-template-columns: 20px 52px minmax(0, 1fr) 44px;
+    gap: 10px;
+  }
+  .sip-image .image-shell,
+  .sip-image img {
+    width: 52px;
+    height: 52px;
   }
 }

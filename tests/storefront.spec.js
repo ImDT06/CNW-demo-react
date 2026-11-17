@@ -23,12 +23,15 @@ test('complete local purchase with editable MB VietQR and persisted receipt', as
   await page.route('**/*', (route) => {
     const url = new URL(route.request().url());
     if (url.hostname !== '127.0.0.1') {
-      external.push(url.href);
+      // The only allowed outside call is the home weather card: coarse coordinates, no
+      // cart or payment data. Blocking it here also proves the time-only fallback works.
+      if (url.hostname !== 'api.open-meteo.com') external.push(url.href);
       return route.abort();
     }
     return route.continue();
   });
   await page.goto('/');
+  await expect(page.getByTestId('sip-weather')).toContainText('Gợi ý theo giờ');
   await page.locator('.hero-actions').getByRole('link', { name: 'Chọn món', exact: true }).click();
   await page.getByRole('textbox', { name: 'Tìm sản phẩm', exact: true }).fill('tra dao');
   await expect(page.getByRole('article')).toHaveCount(1);
